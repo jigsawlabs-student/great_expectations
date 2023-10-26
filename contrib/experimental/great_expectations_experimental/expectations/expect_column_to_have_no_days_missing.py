@@ -44,6 +44,7 @@ class ColumnDistinctDates(ColumnAggregateMetricProvider):
         all_unique_dates = [
             i[0] for i in execution_engine.execute_query(query).fetchall()
         ]
+        
 
         # Only sqlite returns as strings, so make date objects be strings
         if all_unique_dates and isinstance(all_unique_dates[0], date):
@@ -127,6 +128,7 @@ class ExpectColumnToHaveNoDaysMissing(ColumnAggregateExpectation):
         execution_engine: ExecutionEngine = None,
     ):
         from datetime import datetime, timedelta
+        
 
         # returns the distinct dates of the column
         dist_dates_as_str = metrics["column.distinct_dates"]

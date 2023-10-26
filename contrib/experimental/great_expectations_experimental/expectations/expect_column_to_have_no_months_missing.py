@@ -46,9 +46,15 @@ class ColumnDistinctMonths(ColumnAggregateMetricProvider):
         # get all unique months from timestamp
         query = sa.select(sa.func.Date(column).distinct()).select_from(selectable)
         
-        all_unique_months = list({str(datetime.strptime(record[0], '%Y-%m-%d').month)
-                                  for record in
-                                  execution_engine.execute_query(query).fetchall()})
+        date_records = [record[0] for record in execution_engine.execute_query(query).fetchall()]
+        
+        if type(date_records[0]) == str:
+        
+            date_records = list({datetime.strptime(date_record, '%Y-%m-%d')
+                                    for date_record in
+                                    date_records})
+        
+        all_unique_months = [str(date_record.month) for date_record in date_records]
         
         return all_unique_months
 
